@@ -16,7 +16,31 @@ function pick(){const a=matching();current=a[Math.floor(Math.random()*a.length)]
 function digits(n){return String(Math.abs(n)).padStart(5,'0').split('').map(Number)}
 function placeView(p){const labels=['10 000','1 000','100','10','1'];const a=digits(p.a),b=digits(p.b);$('#placeValues').innerHTML=labels.map((l,i)=>`<div class="pv"><span>${l}</span><strong>${a[i]}</strong><span>${p.op} ${b[i]}</span></div>`).join('')}
 function columnExplain(p){const w=Math.max(String(p.a).length,String(p.b).length,String(p.answer).length);const A=String(p.a).padStart(w),B=String(p.b).padStart(w),R=String(p.answer).padStart(w);$('#columnMath').textContent=`  ${A}\n${p.op} ${B}\n${'─'.repeat(w+2)}\n  ${R}`}
-function stepExplain(p){const steps=[];let a=p.a,b=p.b,place=1,carry=0,borrow=0;const names=['birlik','o‘nlik','yuzlik','minglik','o‘n minglik'];for(let i=0;i<5;i++){const da=Math.floor(a/place)%10,db=Math.floor(b/place)%10;if(p.op==='+'){const sum=da+db+carry;steps.push(`${names[i]}: ${da} + ${db}${carry?` + ${carry} (o‘tgan)`:''} = ${sum}. ${sum>=10?`${sum%10} yozamiz, 1 ni keyingi xonaga o‘tkazamiz.`:`${sum} yozamiz.`}`);carry=sum>=10?1:0}else{let top=da-borrow;if(top<db){steps.push(`${names[i]}: ${top} dan ${db} ni ayirib bo‘lmaydi; chap xonadan 1 o‘nlik qarz olamiz. ${top+10} − ${db} = ${top+10-db}.`);borrow=1}else{steps.push(`${names[i]}: ${top} − ${db} = ${top-db}.`);borrow=0}place*=10}$('#steps').innerHTML=steps.map(s=>`<li>${s}</li>`).join('')}
+function stepExplain(p){
+  const steps=[];
+  let place=1,carry=0,borrow=0;
+  const names=['birlik','o‘nlik','yuzlik','minglik','o‘n minglik'];
+  for(let i=0;i<5;i++){
+    const da=Math.floor(p.a/place)%10;
+    const db=Math.floor(p.b/place)%10;
+    if(p.op==='+'){
+      const sum=da+db+carry;
+      steps.push(`${names[i]}: ${da} + ${db}${carry?` + ${carry} (o‘tgan)`:''} = ${sum}. ${sum>=10?`${sum%10} yozamiz, 1 ni keyingi xonaga o‘tkazamiz.`:`${sum} yozamiz.`}`);
+      carry=sum>=10?1:0;
+    }else{
+      let top=da-borrow;
+      if(top<db){
+        steps.push(`${names[i]}: ${top} dan ${db} ni ayirib bo‘lmaydi; chap xonadan 1 o‘nlik qarz olamiz. ${top+10} − ${db} = ${top+10-db}.`);
+        borrow=1;
+      }else{
+        steps.push(`${names[i]}: ${top} − ${db} = ${top-db}.`);
+        borrow=0;
+      }
+    }
+    place*=10;
+  }
+  $('#steps').innerHTML=steps.map(s=>`<li>${s}</li>`).join('');
+}
 function drawLine(p,animate=false){const svg=$('#numberline'),L=55,R=845,Y=95;const start=p.a,end=p.answer;const min=Math.min(start,end),max=Math.max(start,end),span=Math.max(1,max-min),pad=Math.max(500,Math.ceil(span*.12));const lo=Math.max(0,min-pad),hi=max+pad;const x=v=>L+(v-lo)/(hi-lo)*(R-L);let out=`<line x1="${L}" y1="${Y}" x2="${R}" y2="${Y}" stroke="#222" stroke-width="3"/>`;for(let i=0;i<=8;i++){const v=Math.round(lo+(hi-lo)*i/8),xx=x(v);out+=`<line x1="${xx}" y1="${Y-7}" x2="${xx}" y2="${Y+7}" stroke="#777"/><text x="${xx}" y="${Y+28}" text-anchor="middle" font-size="13">${fmt(v)}</text>`}const sx=x(start),ex=x(end);out+=`<path d="M ${sx} ${Y-15} Q ${(sx+ex)/2} 25 ${ex} ${Y-15}" fill="none" stroke="#111" stroke-width="4" stroke-dasharray="8 7"/><circle id="walker" class="walker" cx="${sx}" cy="${Y}" r="10" fill="#111"/><text x="${sx}" y="45" text-anchor="middle" font-weight="700">${fmt(start)}</text><text x="${ex}" y="160" text-anchor="middle" font-weight="700">${fmt(end)}</text>`;svg.innerHTML=out;if(animate){const token=++animToken;const walker=$('#walker');requestAnimationFrame(()=>{if(token===animToken)walker.setAttribute('cx',ex)})}}
 function explain(animate=false){$('#explainTitle').textContent=expr(current)+' qanday ishlaydi?';placeView(current);columnExplain(current);stepExplain(current);drawLine(current,animate)}
 function check(){const v=Number($('#answer').value.replace(/\s/g,''));if(!Number.isFinite(v))return;attempts++;if(v===current.answer){score++;$('#feedback').textContent='To‘g‘ri! Zo‘r. Endi keyingisini quramiz.';$('#feedback').className='feedback ok'}else{$('#feedback').textContent='Hali emas. “Tushuntir” yoki “Harakatlantir”ni bosib ko‘r.';$('#feedback').className='feedback bad'}$('#score').textContent='To‘g‘ri: '+score;$('#attempts').textContent='Urinish: '+attempts}
