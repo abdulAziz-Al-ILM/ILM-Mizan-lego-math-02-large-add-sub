@@ -1,1 +1,96 @@
-<!doctype html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LEGO Matematika — 4–5 xonali qo‘shish-ayirish</title><link rel="stylesheet" href="styles.css"></head><body><main class="app"><header><div><p class="eyebrow">LEGO MATEMATIKA · 2-DARS</p><h1>4–5 xonali sonlarni qo‘shish va ayirish</h1><p class="subtitle">Sonni bo‘laklaymiz, ustunlab ishlaymiz va son o‘qida harakatni ko‘ramiz.</p></div><button id="newProblem" class="primary">Yangi misol</button></header><section class="layout"><div class="practice card"><div class="filters"><button class="chip active" data-filter="all">Aralash</button><button class="chip" data-filter="add">Qo‘shish</button><button class="chip" data-filter="sub">Ayirish</button><button class="chip" data-filter="borrow">O‘tish / qarz</button></div><div class="problem-wrap"><div id="problem" class="problem"></div><input id="answer" inputmode="numeric" placeholder="Javob"><div class="actions"><button id="check" class="primary">Tekshir</button><button id="show" class="secondary">Tushuntir</button><button id="animate" class="secondary">Harakatlantir</button></div><p id="feedback" class="feedback"></p></div><div class="progress"><span id="score">To‘g‘ri: 0</span><span id="attempts">Urinish: 0</span></div></div><aside class="explain card"><p class="eyebrow">VIZUAL OYNACHA</p><h2 id="explainTitle">Misolni tanlang</h2><div id="placeValues" class="place-values"></div><div class="column-wrap"><div id="columnMath" class="column-math"></div></div><div class="numberline-box"><svg id="numberline" viewBox="0 0 900 180"></svg></div><ol id="steps" class="steps"><li>“Tushuntir” tugmasini bosing.</li></ol></aside></section><section class="card bank"><div class="bank-head"><div><p class="eyebrow">MASHQLAR BANKI</p><h2>60 ta tayyor misol</h2></div><button id="shuffleBank" class="secondary">Aralashtir</button></div><div id="problemBank" class="problem-bank"></div></section></main><script src="app.js"></script></body></html>
+<!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LEGO Matematika — 4–5 xonali qo‘shish-ayirish</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="app">
+  <header>
+    <div>
+      <p class="eyebrow">LEGO MATEMATIKA · 2-DARS</p>
+      <h1>4–5 xonali sonlarni qo‘shish va ayirish</h1>
+      <p class="subtitle">Shoshilmaymiz: har bir xona alohida ishlanadi, son o‘qida esa harakatni ko‘z bilan kuzatamiz.</p>
+    </div>
+    <button id="newProblem" class="primary">Yangi misol</button>
+  </header>
+
+  <section class="layout">
+    <div class="practice card">
+      <div class="filters">
+        <button class="chip active" data-filter="all">Aralash</button>
+        <button class="chip" data-filter="add">Qo‘shish</button>
+        <button class="chip" data-filter="sub">Ayirish</button>
+        <button class="chip" data-filter="borrow">O‘tish / qarz</button>
+      </div>
+
+      <div class="problem-wrap">
+        <div id="problem" class="problem"></div>
+        <input id="answer" inputmode="numeric" placeholder="Javob">
+        <div class="actions">
+          <button id="check" class="primary">Tekshir</button>
+          <button id="show" class="secondary">Tushuntir</button>
+        </div>
+        <p id="feedback" class="feedback"></p>
+      </div>
+
+      <div class="progress">
+        <span id="score">To‘g‘ri: 0</span>
+        <span id="attempts">Urinish: 0</span>
+      </div>
+    </div>
+
+    <aside class="explain card">
+      <p class="eyebrow">VIZUAL OYNACHA</p>
+      <h2 id="explainTitle">Misolni tanlang</h2>
+
+      <div id="placeValues" class="place-values"></div>
+
+      <section class="lesson-panel">
+        <div class="lesson-head">
+          <div>
+            <p class="eyebrow">USTUN SHAKLIDA</p>
+            <strong id="stepCounter">Boshlash uchun “Tushuntir”ni bosing</strong>
+          </div>
+          <div class="step-actions">
+            <button id="restartSteps" class="secondary" disabled>Qaytadan</button>
+            <button id="nextStep" class="primary" disabled>Keyingi qadam →</button>
+          </div>
+        </div>
+
+        <div id="columnMath" class="column-math"></div>
+        <div id="stepMessage" class="step-message">Har bir bosqichni o‘zingiz boshqarasiz.</div>
+      </section>
+
+      <section class="numberline-section">
+        <div class="lesson-head">
+          <div>
+            <p class="eyebrow">SON O‘QI</p>
+            <strong>Harakatni sekin kuzating</strong>
+          </div>
+          <button id="animate" class="secondary" disabled>Harakatni boshla</button>
+        </div>
+        <div class="numberline-box">
+          <svg id="numberline" viewBox="0 0 900 180"></svg>
+        </div>
+        <p id="motionText" class="motion-text"></p>
+      </section>
+    </aside>
+  </section>
+
+  <section class="card bank">
+    <div class="bank-head">
+      <div>
+        <p class="eyebrow">MASHQLAR BANKI</p>
+        <h2>60 ta tayyor misol</h2>
+      </div>
+      <button id="shuffleBank" class="secondary">Aralashtir</button>
+    </div>
+    <div id="problemBank" class="problem-bank"></div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
