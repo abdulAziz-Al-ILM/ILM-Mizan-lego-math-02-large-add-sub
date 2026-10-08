@@ -217,7 +217,7 @@ function renderChainBank(list=chainPresets){
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));
- const first=b.dataset.page==='large';$('#largePage').hidden=!first;$('#chainPage').hidden=first;
+ ['simple','chain','large'].forEach(page=>$('#'+page+'Page').hidden=b.dataset.page!==page);
 });
 $('#chainCheck').onclick=()=>{
  const raw=$('#chainAnswer').value.replace(/\s/g,'').replace('−','-');
@@ -233,3 +233,50 @@ $('#chainNext').onclick=()=>{activeChain=chainPresets[(activeChain.id)%60];rende
 $('#chainShuffle').onclick=()=>renderChainBank([...chainPresets].sort(()=>Math.random()-.5));
 $('#chainAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')$('#chainCheck').click()});
 renderChainBank();
+
+/* Birinchi sahifa: ikki xonali sonlar bilan bir amalli 60 mashq. */
+const simplePresets=Array.from({length:60},(_,i)=>{
+ const a=10+(i*23+7)%90,b=10+(i*37+11)%90,op=i%2===0?'+':'−';
+ return {id:i+1,a,b,op,answer:op==='+'?a+b:a-b};
+});
+let simpleCurrent=simplePresets[0],simpleFilter='all',simpleScore=0,simpleAttempts=0;
+const simpleExpr=p=>p.a+' '+p.op+' '+p.b+' = ?';
+function simpleRender(){
+ const p=simpleCurrent;
+ $('#simpleProblem').textContent=simpleExpr(p);
+ $('#simpleAnswer').value='';$('#simpleFeedback').textContent='';$('#simpleFeedback').className='feedback';
+ $('#simpleStory').textContent='Avval '+p.a+' so‘m bor. '+(p.op==='+'?p.b+' so‘m pul keladi.':p.b+' so‘mlik to‘lov yoki majburiyat paydo bo‘ladi.')+' Sof holat qanday o‘zgaradi?';
+ $('#simpleSteps').innerHTML='';
+ document.querySelectorAll('#simpleBank .bank-item').forEach(x=>x.classList.toggle('chosen',Number(x.dataset.id)===p.id));
+}
+function simplePick(){
+ const pool=simplePresets.filter(p=>simpleFilter==='all'||(simpleFilter==='add'?p.op==='+':p.op==='−'));
+ simpleCurrent=pool[Math.floor(Math.random()*pool.length)];simpleRender();
+}
+function simpleBankRender(list=simplePresets){
+ $('#simpleBank').innerHTML=list.map(p=>'<button class="bank-item" data-id="'+p.id+'">'+simpleExpr(p).replace(' = ?','')+'</button>').join('');
+ document.querySelectorAll('#simpleBank .bank-item').forEach(btn=>btn.onclick=()=>{simpleCurrent=simplePresets[Number(btn.dataset.id)-1];simpleRender();$('#simplePage').scrollIntoView({behavior:'smooth'})});
+ simpleRender();
+}
+document.querySelectorAll('.simple-filter').forEach(btn=>btn.onclick=()=>{
+ simpleFilter=btn.dataset.simple;
+ document.querySelectorAll('.simple-filter').forEach(b=>b.classList.toggle('active',b===btn));simplePick();
+});
+$('#simpleCheck').onclick=()=>{
+ const raw=$('#simpleAnswer').value.trim().replace(/\s/g,'').replace('−','-');
+ if(!/^-?\d+$/.test(raw)){$('#simpleFeedback').textContent='Butun son kiriting.';return}
+ simpleAttempts++;const correct=Number(raw)===simpleCurrent.answer;if(correct)simpleScore++;
+ $('#simpleFeedback').textContent=correct?'To‘g‘ri! '+moneyState(simpleCurrent.answer)+'.':'Qayta hisoblab ko‘ring yoki tushuntirishni oching.';
+ $('#simpleFeedback').className='feedback '+(correct?'ok':'bad');
+ $('#simpleProgress').textContent='To‘g‘ri: '+simpleScore+' · Urinish: '+simpleAttempts;
+};
+$('#simpleExplain').onclick=()=>{
+ const p=simpleCurrent,delta=p.op==='+'?p.b:-p.b;
+ const meaning=delta>0?'Keladigan pul: +'+delta+' so‘m.':'To‘lanadigan pul yoki majburiyat: −'+p.b+' so‘m.';
+ $('#simpleSteps').innerHTML='';
+ ['Boshlang‘ich mablag‘: '+p.a+' so‘m.',meaning,'Hisob: '+p.a+' '+p.op+' '+p.b+' = '+p.answer+'.','Yakuniy holat: '+moneyState(p.answer)+'.'].forEach(t=>{const el=document.createElement('div');el.className='chain-step';el.textContent=t;$('#simpleSteps').appendChild(el)});
+};
+$('#simpleNext').onclick=simplePick;
+$('#simpleShuffle').onclick=()=>simpleBankRender([...simplePresets].sort(()=>Math.random()-.5));
+$('#simpleAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')$('#simpleCheck').click()});
+simpleBankRender();
