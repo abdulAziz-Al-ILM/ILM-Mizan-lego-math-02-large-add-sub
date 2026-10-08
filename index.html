@@ -1,96 +1,11 @@
 <!doctype html>
-<html lang="uz">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>LEGO Matematika — 4–5 xonali qo‘shish-ayirish</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<main class="app">
-  <header>
-    <div>
-      <p class="eyebrow">LEGO MATEMATIKA · 2-DARS</p>
-      <h1>4–5 xonali sonlarni qo‘shish va ayirish</h1>
-      <p class="subtitle">Shoshilmaymiz: har bir xona alohida ishlanadi, son o‘qida esa harakatni ko‘z bilan kuzatamiz.</p>
-    </div>
-    <button id="newProblem" class="primary">Yangi misol</button>
-  </header>
-
-  <section class="layout">
-    <div class="practice card">
-      <div class="filters">
-        <button class="chip active" data-filter="all">Aralash</button>
-        <button class="chip" data-filter="add">Qo‘shish</button>
-        <button class="chip" data-filter="sub">Ayirish</button>
-        <button class="chip" data-filter="borrow">O‘tish / qarz</button>
-      </div>
-
-      <div class="problem-wrap">
-        <div id="problem" class="problem"></div>
-        <input id="answer" inputmode="numeric" placeholder="Javob">
-        <div class="actions">
-          <button id="check" class="primary">Tekshir</button>
-          <button id="show" class="secondary">Tushuntir</button>
-        </div>
-        <p id="feedback" class="feedback"></p>
-      </div>
-
-      <div class="progress">
-        <span id="score">To‘g‘ri: 0</span>
-        <span id="attempts">Urinish: 0</span>
-      </div>
-    </div>
-
-    <aside class="explain card">
-      <p class="eyebrow">VIZUAL OYNACHA</p>
-      <h2 id="explainTitle">Misolni tanlang</h2>
-
-      <div id="placeValues" class="place-values"></div>
-
-      <section class="lesson-panel">
-        <div class="lesson-head">
-          <div>
-            <p class="eyebrow">USTUN SHAKLIDA</p>
-            <strong id="stepCounter">Boshlash uchun “Tushuntir”ni bosing</strong>
-          </div>
-          <div class="step-actions">
-            <button id="restartSteps" class="secondary" disabled>Qaytadan</button>
-            <button id="nextStep" class="primary" disabled>Keyingi qadam →</button>
-          </div>
-        </div>
-
-        <div id="columnMath" class="column-math"></div>
-        <div id="stepMessage" class="step-message">Har bir bosqichni o‘zingiz boshqarasiz.</div>
-      </section>
-
-      <section class="numberline-section">
-        <div class="lesson-head">
-          <div>
-            <p class="eyebrow">SON O‘QI</p>
-            <strong>Harakatni sekin kuzating</strong>
-          </div>
-          <button id="animate" class="secondary" disabled>Harakatni boshla</button>
-        </div>
-        <div class="numberline-box">
-          <svg id="numberline" viewBox="0 0 900 180"></svg>
-        </div>
-        <p id="motionText" class="motion-text"></p>
-      </section>
-    </aside>
-  </section>
-
-  <section class="card bank">
-    <div class="bank-head">
-      <div>
-        <p class="eyebrow">MASHQLAR BANKI</p>
-        <h2>60 ta tayyor misol</h2>
-      </div>
-      <button id="shuffleBank" class="secondary">Aralashtir</button>
-    </div>
-    <div id="problemBank" class="problem-bank"></div>
-  </section>
-</main>
-<script src="app.js"></script>
-</body>
-</html>
+<html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ILM Mizan — LEGO Matematika</title><link rel="stylesheet" href="styles.css"></head>
+<body><main class="app">
+<header><div><p class="eyebrow">ILM MIZAN · LEGO MATEMATIKA · BEPUL</p><h1>Matematikani hayot bilan tushunamiz</h1><p class="subtitle">Pul keladi, qarz paydo bo‘ladi, hisob o‘zgaradi. Har bir amalning ma’nosini ko‘ramiz.</p></div></header>
+<nav class="tabs" aria-label="Mavzular"><button class="tab active" data-page="large">1-sahifa · Katta sonlar</button><button class="tab" data-page="chain">2-sahifa · 5–6 qadamli hisob</button></nav>
+<section id="largePage" class="page">
+<div class="layout"><section class="card"><p class="eyebrow">1-MAVZU · QO‘SHISH VA AYIRISH</p><h2>4–5 xonali sonlar</h2><div class="filters"><button class="chip active" data-filter="all">Aralash</button><button class="chip" data-filter="add">Qo‘shish</button><button class="chip" data-filter="sub">Ayirish</button><button class="chip" data-filter="borrow">O‘tish / qarz olish</button></div><div class="problem-wrap"><div id="problem" class="problem"></div><input id="answer" inputmode="numeric" type="text" placeholder="Javob" aria-label="Javobingiz"><div class="actions"><button id="check" class="primary">Tekshir</button><button id="show" class="secondary">Tushuntir</button><button id="newProblem" class="secondary">Yangi misol</button></div><p id="feedback" class="feedback" aria-live="polite"></p></div><div class="progress"><span id="score">To‘g‘ri: 0</span><span id="attempts">Urinish: 0</span></div></section>
+<aside class="card"><p class="eyebrow">HAYOTIY MA’NO</p><h2 id="explainTitle">Misolni tanlang</h2><div id="moneyStory" class="money-story"></div><div id="placeValues" class="place-values"></div><section class="lesson-panel"><div class="lesson-head"><div><p class="eyebrow">USTUNLAB HISOBLASH</p><strong id="stepCounter">«Tushuntir»ni bosing</strong></div><div class="step-actions"><button id="restartSteps" class="secondary" disabled>Qaytadan</button><button id="nextStep" class="primary" disabled>Keyingi qadam →</button></div></div><div id="columnMath" class="column-math"></div><div id="stepMessage" class="step-message">Bosqichlarni birma-bir oching.</div></section><section class="money-panel"><p class="eyebrow">PUL VA MAJBURIYAT</p><h3>Hisobning ma’nosi</h3><div id="moneyVisual"></div><p id="motionText" class="motion-text"></p><button id="animate" class="secondary" disabled>O‘zgarishni ko‘rsat</button></section></aside></div>
+<section class="card bank"><div class="bank-head"><div><p class="eyebrow">MASHQLAR BANKI</p><h2>60 ta katta sonli misol</h2></div><button id="shuffleBank" class="secondary">Aralashtir</button></div><div id="problemBank" class="problem-bank"></div></section></section>
+<section id="chainPage" class="page" hidden><section class="card"><p class="eyebrow">2-MAVZU · KETMA-KET AMALLAR</p><h2>Ikki xonali sonlar bilan 5–6 qadam</h2><p class="subtitle">Boshlang‘ich mablag‘ingizga pul keladi yoki to‘lov/qarz qo‘shiladi. Har bir qadamdan keyin sof holatingizni hisoblang. Manfiy natija — qarz.</p><div class="chain-problem" id="chainProblem"></div><div id="chainStory" class="chain-story"></div><div class="actions"><input id="chainAnswer" type="text" inputmode="numeric" placeholder="Yakuniy javob" aria-label="Ketma-ket misol javobi"><button id="chainCheck" class="primary">Tekshir</button><button id="chainExplain" class="secondary">Qadamlarni tushuntir</button><button id="chainNext" class="secondary">Boshqa misol</button></div><p id="chainFeedback" class="feedback" aria-live="polite"></p><div id="chainSteps" class="chain-steps"></div><p id="chainProgress" class="progress"></p></section><section class="card bank"><div class="bank-head"><div><p class="eyebrow">MASHQLAR BANKI</p><h2>60 ta 5–6 qadamli misol</h2></div><button id="chainShuffle" class="secondary">Aralashtir</button></div><div id="chainBank" class="problem-bank"></div></section></section>
+<footer>ILM Mizan · Bilim hamma uchun bepul · <span>ILM → MIZAN → AMAL</span></footer></main><script src="app.js"></script></body></html>
