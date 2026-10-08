@@ -60,3 +60,8 @@ button:disabled{opacity:.42;cursor:not-allowed}
 .chain-steps{display:grid;gap:10px;margin-top:16px}.chain-step{background:var(--soft);padding:15px;border-radius:14px;line-height:1.55}.next-chain-step{justify-self:start}
 .bank-item.chosen{background:#eaf5ef;border-color:#26845a}footer{text-align:center;padding-top:35px;color:var(--muted);font-weight:600}
 @media(max-width:480px){.tab{flex:1}.money-line{grid-template-columns:80px 1fr}.money-line strong{grid-column:2}}
+
+.multiply-visual{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-top:18px}
+.multiply-group{padding:12px;border:1px solid var(--line);border-radius:16px;background:var(--soft);display:flex;flex-direction:column;gap:8px}.multiply-group>span{font-weight:700}.multiply-coins{display:flex;flex-wrap:wrap;gap:4px}.multiply-coin{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#ecd079;border:1px solid #bd9c37;font-size:.75rem;font-weight:800;color:#503b07}
+.multiply-total{grid-column:1/-1;background:#e4f2e9;padding:16px;border-radius:14px;font-weight:900;font-size:1.35rem}
+.times-grid{display:grid;gap:8px;overflow-x:auto}.times-row{display:grid;grid-template-columns:80px repeat(10,minmax(48px,1fr));gap:5px;min-width:660px;align-items:stretch}.times-row>strong{align-self:center}.times-cell{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px 2px;cursor:pointer;font-size:.75rem;font-weight:700}.times-cell small{display:block;color:var(--ok);font-weight:900;font-size:.85rem;margin-top:4px}.times-cell:hover,.times-cell.chosen{background:#e4f2e9;border-color:var(--ok)}
