@@ -49,3 +49,14 @@ button:disabled{opacity:.42;cursor:not-allowed}
 @media(max-width:850px){header{align-items:start;flex-direction:column}.layout{grid-template-columns:1fr}.problem-bank{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:480px){.problem-bank{grid-template-columns:repeat(2,1fr)}.place-values{grid-template-columns:repeat(3,1fr)}.lesson-head{align-items:flex-start}.step-actions{width:100%}.step-actions button{flex:1}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+.tabs{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 22px}.tab{border:1px solid var(--line);background:#fff;padding:14px 20px;border-radius:15px;font-weight:800;cursor:pointer}.tab.active{background:#176947;color:#fff;border-color:#176947}
+.page[hidden]{display:none!important}.page{margin-top:10px}
+.money-story{margin:16px 0;background:#eaf5ef;border:1px solid #c8e4d3;border-radius:16px;padding:15px;line-height:1.5}
+.money-story p{margin:6px 0}.money-panel{background:var(--soft);border-radius:20px;padding:16px;margin-top:14px}.money-panel h3{margin:8px 0}
+.money-line{display:grid;grid-template-columns:105px minmax(50px,1fr) minmax(115px,auto);gap:10px;align-items:center;margin:14px 0;font-size:.86rem}.money-track{height:19px;border-radius:20px;background:#dedbd2;overflow:hidden}.money-fill{background:#26845a;height:100%;border-radius:20px;transition:width 1.1s ease}.money-fill.expense{background:#c34e4e}
+.chain-problem{font-size:clamp(1.3rem,3.8vw,2.4rem);font-weight:850;line-height:1.7;letter-spacing:-.02em;background:var(--soft);border-radius:18px;padding:18px;margin:19px 0;overflow-wrap:anywhere}
+.chain-story{line-height:1.65;background:#eaf5ef;padding:15px;border-radius:14px}
+#chainAnswer{max-width:240px;padding:12px 15px;border-radius:14px;border:2px solid var(--line);font-size:1.1rem}
+.chain-steps{display:grid;gap:10px;margin-top:16px}.chain-step{background:var(--soft);padding:15px;border-radius:14px;line-height:1.55}.next-chain-step{justify-self:start}
+.bank-item.chosen{background:#eaf5ef;border-color:#26845a}footer{text-align:center;padding-top:35px;color:var(--muted);font-weight:600}
+@media(max-width:480px){.tab{flex:1}.money-line{grid-template-columns:80px 1fr}.money-line strong{grid-column:2}}
