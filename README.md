@@ -5,7 +5,7 @@ Ochiq va bepul matematika o‘rganish platformasi. Barcha mavzular bitta saytda 
 ## Sahifalar
 1. **Ikki xonali, bir amalli hisoblar:** 60 ta qo‘shish-ayirish mashqi, pul/qarz misolida tushuntirish, javobni tekshirish.
 2. **Ikki xonali 5–6 qadamli hisoblar:** 60 ta ko‘p amalli mashq, bosqichma-bosqich izoh.
-3. **4–5 xonali qo‘shish-ayirish:** avvalgi 60 ta misol, ustunlab hisoblash va pul orqali izohlash.
+3. **4–5 xonali qo‘shish-ayirish:** avvalgi 60 ta misol, ustunlab hisoblash va pul orqali izohlash.\n4. **Ko‘paytirish:** 60 ta bir amalli ko‘paytirish mashqi (1–6 × 1–10), pul kelishini takroriy qo‘shish bilan tushuntirish, rangli tanga guruhlari, 1–10 karra jadvali.
 
 ## Muhim tushuncha
 Sof hisob = qo‘ldagi mablag‘ + keladigan kirim − to‘lov va majburiyatlar. Manfiy qiymat sof qarzni bildiradi. To‘lov tushuntirishida «to‘ladingiz yoki majburiyat oldingiz» jumlalari faqat hisobdagi minusni izohlash uchun ishlatiladi.
