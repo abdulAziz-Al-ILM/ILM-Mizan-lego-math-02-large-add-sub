@@ -306,7 +306,19 @@ function multiplyExplain(){
   '2-qadam: Bir xil '+p.b+' sonini '+p.a+' marta qo‘shamiz.',
   '3-qadam: '+addends+' = '+p.answer+'.',
   '4-qadam: '+p.a+' × '+p.b+' = '+p.answer+' so‘m.'].forEach(s=>{const el=document.createElement('div');el.className='chain-step';el.textContent=s;$('#multiplySteps').appendChild(el)});
- $('#multiplyVisual').innerHTML=Array.from({length:p.a},(_,i)=>'<div class="multiply-group"><span>'+(i+1)+'-kishi</span><div class="multiply-coins">'+Array.from({length:p.b},()=>'<span aria-hidden="true" class="multiply-coin">1</span>').join('')+'</div><strong>'+p.b+' so‘m</strong></div>').join('')+'<div class="multiply-total">Jami: '+p.answer+' so‘m</div>';
+ $('#multiplyVisual').innerHTML=Array.from({length:p.a},(_,i)=>
+   '<div class="multiply-group person-card"><div class="person-figure" aria-hidden="true">'+
+   '<svg viewBox="0 0 100 130" width="90" height="110"><circle cx="50" cy="28" r="20" fill="#e8b789"/>'+
+   '<path d="M30 25 Q30 4 50 7 Q71 5 70 25 Q58 15 50 16 Q39 16 30 25" fill="#43392f"/>'+
+   '<rect x="27" y="53" width="46" height="53" rx="13" fill="'+['#238a73','#537abb','#b87945','#8a65b6'][i%4]+'"/>'+
+   '<rect x="15" y="59" width="13" height="40" rx="6" fill="#e8b789"/><rect x="72" y="59" width="13" height="40" rx="6" fill="#e8b789"/>'+
+   '<rect x="32" y="103" width="15" height="26" rx="4" fill="#344655"/><rect x="54" y="103" width="15" height="26" rx="4" fill="#344655"/>'+
+   '<circle cx="43" cy="28" r="2" fill="#392d27"/><circle cx="57" cy="28" r="2" fill="#392d27"/>'+
+   '<path d="M43 38 Q50 43 57 38" stroke="#9d5b4d" stroke-width="2" fill="none"/></svg></div>'+
+   '<span class="person-name">'+(i+1)+'-kishi</span><div class="multiply-coins">'+
+   Array.from({length:p.b},()=>'<span aria-hidden="true" class="multiply-coin">1</span>').join('')+
+   '</div><strong>'+p.b+' so‘m</strong></div>').join('')+
+   '<div class="multiply-total">Jami: '+p.answer+' so‘m</div>';
 }
 function multiplyBankRender(list=multiplyProblems){
  $('#multiplyBank').innerHTML=list.map(p=>'<button class="bank-item" data-id="'+p.id+'">'+p.a+' × '+p.b+'</button>').join('');
