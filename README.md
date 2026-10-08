@@ -3,8 +3,9 @@
 Ochiq va bepul matematika o‘rganish platformasi. Barcha mavzular bitta saytda sahifalar orqali rivojlantiriladi; har bir mavzu uchun alohida repository ochilmaydi.
 
 ## Sahifalar
-1. **4–5 xonali qo‘shish-ayirish:** 60 ta tayyor misol, xona qiymatlari, ustunlab bosqichma-bosqich yechish, qarz olish/o‘tkazish, real mablag‘ va to‘lovlar orqali izoh.
-2. **Ikki xonali 5–6 qadamli hisoblar:** 60 ta deterministik mashq, kirim (+), chiqim yoki yangi majburiyat (−), manfiy qoldiq (sof qarz), qadam-baqadam tushuntirish va javob tekshirish.
+1. **Ikki xonali, bir amalli hisoblar:** 60 ta qo‘shish-ayirish mashqi, pul/qarz misolida tushuntirish, javobni tekshirish.
+2. **Ikki xonali 5–6 qadamli hisoblar:** 60 ta ko‘p amalli mashq, bosqichma-bosqich izoh.
+3. **4–5 xonali qo‘shish-ayirish:** avvalgi 60 ta misol, ustunlab hisoblash va pul orqali izohlash.
 
 ## Muhim tushuncha
 Sof hisob = qo‘ldagi mablag‘ + keladigan kirim − to‘lov va majburiyatlar. Manfiy qiymat sof qarzni bildiradi. To‘lov tushuntirishida «to‘ladingiz yoki majburiyat oldingiz» jumlalari faqat hisobdagi minusni izohlash uchun ishlatiladi.
