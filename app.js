@@ -217,7 +217,7 @@ function renderChainBank(list=chainPresets){
 }
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));
- ['simple','chain','large'].forEach(page=>$('#'+page+'Page').hidden=b.dataset.page!==page);
+ ['simple','chain','large','multiply'].forEach(page=>$('#'+page+'Page').hidden=b.dataset.page!==page);
 });
 $('#chainCheck').onclick=()=>{
  const raw=$('#chainAnswer').value.replace(/\s/g,'').replace('−','-');
@@ -280,3 +280,58 @@ $('#simpleNext').onclick=simplePick;
 $('#simpleShuffle').onclick=()=>simpleBankRender([...simplePresets].sort(()=>Math.random()-.5));
 $('#simpleAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')$('#simpleCheck').click()});
 simpleBankRender();
+
+/* 4-mavzu: ko‘paytirish — 60 ta noyob misol va takroriy qo‘shish modeli. */
+const multiplyProblems=Array.from({length:60},(_,i)=>({id:i+1,a:Math.floor(i/10)+1,b:i%10+1,answer:(Math.floor(i/10)+1)*(i%10+1)}));
+let activeMultiply=multiplyProblems[0],multiplyFilter='all',multiplyScore=0,multiplyAttempts=0;
+const multiplyExpr=p=>p.a+' × '+p.b+' = ?';
+function multiplyRender(){
+ const p=activeMultiply;
+ $('#multiplyProblem').textContent=multiplyExpr(p);
+ $('#multiplyStory').textContent=p.a+' kishining har biri '+p.b+' so‘mdan berishi kerak. Jami qancha pul keladi?';
+ $('#multiplyAnswer').value='';$('#multiplyFeedback').textContent='';$('#multiplyFeedback').className='feedback';
+ $('#multiplySteps').innerHTML='';$('#multiplyVisual').innerHTML='';
+ document.querySelectorAll('#multiplyBank .bank-item').forEach(x=>x.classList.toggle('chosen',Number(x.dataset.id)===p.id));
+ document.querySelectorAll('#timesTable .times-cell').forEach(x=>x.classList.toggle('chosen',Number(x.dataset.a)===p.a&&Number(x.dataset.b)===p.b));
+}
+function multiplyPick(){
+ const pool=multiplyProblems.filter(p=>multiplyFilter==='all'||(multiplyFilter==='easy'?p.b<=5:p.b>=6));
+ activeMultiply=pool[Math.floor(Math.random()*pool.length)];multiplyRender();
+}
+function multiplyExplain(){
+ const p=activeMultiply;
+ const addends=Array(p.a).fill(String(p.b)).join(' + ');
+ $('#multiplySteps').innerHTML='';
+ ['1-qadam: '+p.a+' ta guruh bor, har birida '+p.b+' so‘mdan.',
+  '2-qadam: Bir xil '+p.b+' sonini '+p.a+' marta qo‘shamiz.',
+  '3-qadam: '+addends+' = '+p.answer+'.',
+  '4-qadam: '+p.a+' × '+p.b+' = '+p.answer+' so‘m.'].forEach(s=>{const el=document.createElement('div');el.className='chain-step';el.textContent=s;$('#multiplySteps').appendChild(el)});
+ $('#multiplyVisual').innerHTML=Array.from({length:p.a},(_,i)=>'<div class="multiply-group"><span>'+(i+1)+'-kishi</span><div class="multiply-coins">'+Array.from({length:p.b},()=>'<span aria-hidden="true" class="multiply-coin">1</span>').join('')+'</div><strong>'+p.b+' so‘m</strong></div>').join('')+'<div class="multiply-total">Jami: '+p.answer+' so‘m</div>';
+}
+function multiplyBankRender(list=multiplyProblems){
+ $('#multiplyBank').innerHTML=list.map(p=>'<button class="bank-item" data-id="'+p.id+'">'+p.a+' × '+p.b+'</button>').join('');
+ document.querySelectorAll('#multiplyBank .bank-item').forEach(x=>x.onclick=()=>{activeMultiply=multiplyProblems[Number(x.dataset.id)-1];multiplyRender();$('#multiplyPage').scrollIntoView({behavior:'smooth'})});
+ multiplyRender();
+}
+$('#timesTable').innerHTML=Array.from({length:10},(_,a)=>'<div class="times-row"><strong>'+(a+1)+' karra</strong>'+Array.from({length:10},(_,b)=>'<button class="times-cell" data-a="'+(a+1)+'" data-b="'+(b+1)+'">'+(a+1)+'×'+(b+1)+'<small>'+(a+1)*(b+1)+'</small></button>').join('')+'</div>').join('');
+document.querySelectorAll('#timesTable .times-cell').forEach(btn=>btn.onclick=()=>{
+ const a=Number(btn.dataset.a),b=Number(btn.dataset.b),found=multiplyProblems.find(p=>p.a===a&&p.b===b);
+ if(found){activeMultiply=found;multiplyRender();multiplyExplain();$('#multiplyProblem').scrollIntoView({behavior:'smooth'})}
+ else {$('#multiplySteps').innerHTML='<div class="chain-step">'+a+' × '+b+' = '+Array(a).fill(b).join(' + ')+' = '+(a*b)+'</div>';$('#multiplyVisual').innerHTML='';$('#multiplyProblem').textContent=a+' × '+b+' = '+(a*b);$('#multiplyStory').textContent='Ko‘paytirish jadvalidan tanlangan namuna. Mashqlar bankidan misol tanlab yechishni davom ettiring.';}
+});
+document.querySelectorAll('.multiply-filter').forEach(btn=>btn.onclick=()=>{
+ multiplyFilter=btn.dataset.multiply;document.querySelectorAll('.multiply-filter').forEach(x=>x.classList.toggle('active',x===btn));multiplyPick();
+});
+$('#multiplyCheck').onclick=()=>{
+ const raw=$('#multiplyAnswer').value.trim().replace(/\s/g,'');
+ if(!/^\d+$/.test(raw)){$('#multiplyFeedback').textContent='Javob uchun butun son kiriting.';return}
+ multiplyAttempts++;const correct=Number(raw)===activeMultiply.answer;if(correct)multiplyScore++;
+ $('#multiplyFeedback').textContent=correct?'To‘g‘ri! '+activeMultiply.answer+' so‘m.':'Yana bir marta hisoblang. «Tushuntir» yordam beradi.';
+ $('#multiplyFeedback').className='feedback '+(correct?'ok':'bad');
+ $('#multiplyProgress').textContent='To‘g‘ri: '+multiplyScore+' · Urinish: '+multiplyAttempts;
+};
+$('#multiplyExplain').onclick=multiplyExplain;
+$('#multiplyNext').onclick=multiplyPick;
+$('#multiplyShuffle').onclick=()=>multiplyBankRender([...multiplyProblems].sort(()=>Math.random()-.5));
+$('#multiplyAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')$('#multiplyCheck').click()});
+multiplyBankRender();
