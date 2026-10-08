@@ -35,7 +35,7 @@ function renderProblem(){
   $('#stepMessage').textContent='Har bir bosqichni o‘zingiz boshqarasiz.';
   $('#stepCounter').textContent='Boshlash uchun “Tushuntir”ni bosing';
   $('#nextStep').disabled=true;$('#restartSteps').disabled=true;$('#animate').disabled=true;
-  $('#numberline').innerHTML='';$('#motionText').textContent='';
+  $('#moneyVisual').innerHTML='';$('#moneyStory').innerHTML='';$('#motionText').textContent='';
   lessonSteps=[];stepIndex=-1;$('#answer').focus();
 }
 function pick(){const a=matching();current=a[Math.floor(Math.random()*a.length)];renderProblem()}
@@ -137,39 +137,21 @@ function nextStep(){
 }
 function restartSteps(){stepIndex=-1;renderColumn(null);$('#nextStep').disabled=false;$('#stepCounter').textContent=`0 / ${lessonSteps.length} qadam`;$('#stepMessage').textContent='Yana birliklar xonasidan boshlaymiz. “Keyingi qadam”ni bosing.'}
 
-function lineGeometry(p){
-  const L=55,R=845,Y=95,start=p.a,end=p.answer,min=Math.min(start,end),max=Math.max(start,end),span=Math.max(1,max-min),pad=Math.max(500,Math.ceil(span*.12));
-  const lo=Math.max(0,min-pad),hi=max+pad,x=v=>L+(v-lo)/(hi-lo)*(R-L);
-  return {L,R,Y,start,end,lo,hi,x,sx:x(start),ex:x(end)};
-}
 function drawLine(animate=false){
-  if(rafId)cancelAnimationFrame(rafId);
-  const p=current,g=lineGeometry(p),svg=$('#numberline');
-  let out=`<line x1="${g.L}" y1="${g.Y}" x2="${g.R}" y2="${g.Y}" stroke="#222" stroke-width="3"/>`;
-  for(let i=0;i<=8;i++){
-    const v=Math.round(g.lo+(g.hi-g.lo)*i/8),xx=g.x(v);
-    out+=`<line x1="${xx}" y1="${g.Y-7}" x2="${xx}" y2="${g.Y+7}" stroke="#777"/><text x="${xx}" y="${g.Y+28}" text-anchor="middle" font-size="13">${fmt(v)}</text>`;
-  }
-  out+=`<path d="M ${g.sx} ${g.Y-15} Q ${(g.sx+g.ex)/2} 25 ${g.ex} ${g.Y-15}" fill="none" stroke="#777" stroke-width="3" stroke-dasharray="8 7"/><circle id="walker" cx="${g.sx}" cy="${g.Y}" r="10" fill="#111"/><text x="${g.sx}" y="45" text-anchor="middle" font-weight="700">${fmt(g.start)}</text><text x="${g.ex}" y="160" text-anchor="middle" font-weight="700">${fmt(g.end)}</text>`;
-  svg.innerHTML=out;
-  $('#motionText').textContent=`Boshlanish: ${fmt(g.start)}. Natija tomon ${current.op==='+'?'qo‘shish':'ayirish'} yo‘nalishida boramiz.`;
-  if(!animate)return;
-  const walker=$('#walker');
-  const duration=4200;
-  const startTime=performance.now();
-  const from=g.sx,to=g.ex;
-  function tick(now){
-    const t=Math.min(1,(now-startTime)/duration);
-    const eased=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
-    walker.setAttribute('cx',String(from+(to-from)*eased));
-    $('#motionText').textContent=t<1?`Harakat: ${Math.round(t*100)}% — shoshilmay kuzating.`:`Yetib keldik: ${fmt(g.end)}.`;
-    if(t<1)rafId=requestAnimationFrame(tick);
-  }
-  rafId=requestAnimationFrame(tick);
+ const p=current;const before=p.a,delta=p.op==='+'?p.b:-p.b,after=p.answer;
+ const value=n=>fmt(n)+' so‘m';
+ const describe=n=>n<0?value(Math.abs(n))+' qarz':n===0?'Hisob teng: 0 so‘m':value(n)+' mablag‘';
+ $('#moneyStory').innerHTML='<p><strong>Boshlanish:</strong> '+value(before)+'</p><p><strong>'+(delta>=0?'Kirim':'Chiqim')+':</strong> '+(delta>=0?'+':'−')+value(Math.abs(delta))+'</p><p><strong>Natija:</strong> '+describe(after)+'</p>';
+ const max=Math.max(before,Math.abs(delta),Math.abs(after),1);
+ const percent=v=>Math.max(1,Math.round(Math.abs(v)/max*100));
+ $('#moneyVisual').innerHTML='<div class="money-line"><span>Bor edi</span><div class="money-track"><div class="money-fill" style="width:'+percent(before)+'%"></div></div><strong>'+value(before)+'</strong></div>'+
+ '<div class="money-line"><span>'+(delta>=0?'Keladi':'To‘lanadi')+'</span><div class="money-track"><div class="money-fill '+(delta<0?'expense':'')+'" style="width:'+percent(delta)+'%"></div></div><strong>'+(delta>=0?'+':'−')+value(Math.abs(delta))+'</strong></div>'+
+ '<div class="money-line"><span>Qoladi</span><div class="money-track"><div class="money-fill '+(after<0?'expense':'')+'" style="width:'+(animate?percent(after):0)+'%"></div></div><strong>'+describe(after)+'</strong></div>';
+ $('#motionText').textContent=animate?'Avvalgi mablag‘ + kirim yoki − chiqim = yakuniy holat.':'«O‘zgarishni ko‘rsat» orqali natijani ko‘ring.';
 }
 function check(){
   const v=Number($('#answer').value.replace(/\s/g,''));
-  if(!Number.isFinite(v))return;
+  if(!$('#answer').value.trim() || !Number.isFinite(v))return;
   attempts++;
   if(v===current.answer){score++;$('#feedback').textContent='To‘g‘ri! Zo‘r. Endi keyingisini quramiz.';$('#feedback').className='feedback ok'}
   else{$('#feedback').textContent='Hali emas. “Tushuntir”ni bosib, qadam-baqadam ko‘rib chiq.';$('#feedback').className='feedback bad'}
@@ -189,3 +171,65 @@ $('#animate').onclick=()=>drawLine(true);
 $('#shuffleBank').onclick=()=>renderBank([...presets].sort(()=>Math.random()-.5));
 $('#answer').addEventListener('keydown',e=>{if(e.key==='Enter')check()});
 renderBank();renderProblem();
+/* Ikkinchi sahifa: takrorlanadigan emas, oldindan belgilangan 60 ta ikki xonali mashq. */
+const chainPresets=Array.from({length:60},(_,i)=>{
+  const start=12+(i*17)%77;
+  const length=i%2===0?5:6;
+  const ops=Array.from({length},(_,j)=>{
+    const amount=10+((i*19+j*23+i*j*7)%80);
+    const sign=(i+j*3+Math.floor(i/4))%4<2?1:-1;
+    return sign*amount;
+  });
+  return {id:i+1,start,ops,answer:ops.reduce((s,x)=>s+x,start)};
+});
+let activeChain=chainPresets[0],chainCorrect=0,chainAttempts=0,chainIndex=-1;
+const chainExpr=p=>fmt(p.start)+p.ops.map(n=>' '+(n>=0?'+':'−')+' '+fmt(Math.abs(n))).join('')+' = ?';
+const moneyState=n=>n<0?fmt(-n)+' so‘m qarz':n===0?'0 so‘m, hisob teng':fmt(n)+' so‘m mablag‘';
+function renderChain(){
+ $('#chainProblem').textContent=chainExpr(activeChain);
+ $('#chainAnswer').value='';$('#chainFeedback').textContent='';$('#chainFeedback').className='feedback';
+ $('#chainSteps').innerHTML='';chainIndex=-1;
+ $('#chainStory').innerHTML='<strong>Vaziyat:</strong> Avval '+fmt(activeChain.start)+' so‘m mablag‘ bor. Har bir + pul kelishini, har bir − to‘lov yoki yangi majburiyatni bildiradi.';
+ document.querySelectorAll('#chainBank .bank-item').forEach(x=>x.classList.toggle('chosen',Number(x.dataset.id)===activeChain.id));
+}
+function chainStepsView(){
+ let total=activeChain.start;
+ const rows=[{text:'Boshlanish: '+moneyState(total),balance:total}];
+ for(let i=0;i<activeChain.ops.length;i++){
+   const x=activeChain.ops[i],old=total;total+=x;
+   const description=x>=0?'Sizga '+fmt(x)+' so‘m keldi':'Siz '+fmt(-x)+' so‘m to‘ladingiz yoki shu miqdorda majburiyat oldingiz';
+   rows.push({text:(i+1)+'-qadam: '+description+'. '+fmt(old)+(x>=0?' + ':' − ')+fmt(Math.abs(x))+' = '+fmt(total)+'. Holat: '+moneyState(total)+'.',balance:total});
+ }
+ return rows;
+}
+function showChainNextStep(){
+ const rows=chainStepsView();if(chainIndex>=rows.length-1)return;
+ chainIndex++;
+ const row=rows[chainIndex],node=document.createElement('div');node.className='chain-step';node.textContent=row.text;$('#chainSteps').appendChild(node);
+ if(chainIndex===rows.length-1){const end=document.createElement('strong');end.textContent='Yakun: '+moneyState(activeChain.answer);$('#chainSteps').appendChild(end)}
+ else {const b=document.createElement('button');b.className='secondary next-chain-step';b.textContent='Keyingi qadam →';b.onclick=showChainNextStep;$('#chainSteps').appendChild(b)}
+ const prev=$('.next-chain-step');if(prev&&prev!==$('#chainSteps').lastElementChild)prev.remove();
+}
+function renderChainBank(list=chainPresets){
+ $('#chainBank').innerHTML=list.map(p=>'<button class="bank-item" data-id="'+p.id+'">#'+p.id+' · '+p.ops.length+' amal</button>').join('');
+ document.querySelectorAll('#chainBank .bank-item').forEach(b=>b.onclick=()=>{activeChain=chainPresets[Number(b.dataset.id)-1];renderChain();document.querySelector('#chainPage').scrollIntoView({behavior:'smooth'})});
+ renderChain();
+}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t===b));
+ const first=b.dataset.page==='large';$('#largePage').hidden=!first;$('#chainPage').hidden=first;
+});
+$('#chainCheck').onclick=()=>{
+ const raw=$('#chainAnswer').value.replace(/\s/g,'').replace('−','-');
+ if(!/^-?\d+$/.test(raw)){$('#chainFeedback').textContent='Butun son kiriting.';return}
+ chainAttempts++;
+ const good=Number(raw)===activeChain.answer;if(good)chainCorrect++;
+ $('#chainFeedback').textContent=good?'To‘g‘ri! '+moneyState(activeChain.answer)+'.':'Hozircha noto‘g‘ri. Har bir amalni ketma-ket tekshiring.';
+ $('#chainFeedback').className='feedback '+(good?'ok':'bad');
+ $('#chainProgress').textContent='To‘g‘ri: '+chainCorrect+' · Urinish: '+chainAttempts;
+};
+$('#chainExplain').onclick=()=>{chainIndex=-1;$('#chainSteps').innerHTML='';showChainNextStep()};
+$('#chainNext').onclick=()=>{activeChain=chainPresets[(activeChain.id)%60];renderChain()};
+$('#chainShuffle').onclick=()=>renderChainBank([...chainPresets].sort(()=>Math.random()-.5));
+$('#chainAnswer').addEventListener('keydown',e=>{if(e.key==='Enter')$('#chainCheck').click()});
+renderChainBank();
